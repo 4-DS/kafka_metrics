@@ -15,7 +15,7 @@ consumer = KafkaConsumer(bootstrap_servers=[f'{os.getenv("KAFKA_SERVER")}:9092']
                          security_protocol = "SSL",
                          ssl_check_hostname=False,
                          ssl_cafile=os.path.join(dirname, 'ca.pem'),
-                         ssl_certfile=os.path.join(dirname, 'client-signed.pem')
+                         ssl_certfile=os.path.join(dirname, 'client-signed.pem'),
                          auto_offset_reset='earliest',
                          enable_auto_commit=True,
                          consumer_timeout_ms=1000)
