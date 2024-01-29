@@ -9,7 +9,7 @@ git clone https://github.com/4-DS/kafka_metrics.git
 ```
 cd kafka_metrics
 cd kafka
-docker compose -f docker-compose-single-kafka.yaml up
+docker compose -f docker-compose-single-kafka-ssl.yaml up
 ```
 
 ## Produce Messages
