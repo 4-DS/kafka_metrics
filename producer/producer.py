@@ -7,7 +7,14 @@ import logging
 import json
 import os
 
-producer = KafkaProducer(bootstrap_servers=[f'{os.getenv("KAFKA_SERVER")}:9092'])
+dirname = os.path.dirname(os.path.join(os.path.abspath(__file__)))
+
+producer = KafkaProducer(bootstrap_servers=[f'{os.getenv("KAFKA_SERVER")}:9093'],
+                         security_protocol = "SSL",
+                         ssl_check_hostname=False,
+                         ssl_cafile=os.path.join(dirname, 'ca.pem'),
+                         ssl_certfile=os.path.join(dirname, 'client-signed.pem')
+                         )
 assert(producer.bootstrap_connected())
 
 # Asynchronous by default
