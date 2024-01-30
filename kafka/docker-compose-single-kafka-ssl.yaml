@@ -14,29 +14,32 @@ services:
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_LISTENERS=SSL://:9092,CONTROLLER://:9093
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,SSL:SSL
-      - KAFKA_CFG_ADVERTISED_LISTENERS=SSL://kafka1:9093
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:SSL,SSL:SSL
+      - KAFKA_CFG_ADVERTISED_LISTENERS=SSL://:9092
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=SSL
-      - KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL=PLAIN
-      - KAFKA_TLS_TYPE=JKS
       - KAFKA_BROKER_ID=1
       - KAFKA_CFG_BROKER_ID=1
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka1:9093
-      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@:9093
+      - ALLOW_PLAINTEXT_LISTENER=no
       - KAFKA_KRAFT_CLUSTER_ID=L0ZEQh1yTbGhNNUE7-6wSQ
       # TODO: Create topics on start of kafka, disable auto creation
       - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
       # works ONLY for https://hub.docker.com/r/wurstmeister/kafka image
       - KAFKA_CREATE_TOPICS=ExampleTopic:1:1
       - KAFKA_SSL_CLIENT_AUTH=required
-      - KAFKA_SSL_KEYSTORE_FILENAME=/certs/kafka.keystore.jks
-      - KAFKA_SSL_KEYSTORE_CREDENTIALS=/certs/keystore_creds
-      - KAFKA_SSL_KEY_CREDENTIALS=/certs/cert_creds
-      - KAFKA_SSL_TRUSTSTORE_FILENAME=/certs/kafka.truststore.jks
-      - KAFKA_SSL_TRUSTSTORE_CREDENTIALS=/certs/cert_creds
-      - KAFKA_CERTIFICATE_PASSWORD=datahub
+      #- KAFKA_TLS_TYPE=PEM
+      #- KAFKA_SSL_KEYSTORE_TYPE=PEM
+      #- KAFKA_SSL_TRUSTSTORE_TYPE=PEM
+      - KAFKA_CERTIFICATE_PASSWORD=datapass
+      #- KAFKA_CFG_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM=
+      - KAFKA_TLS_CLIENT_AUTH=required
+      #- BITNAMI_DEBUG=true
     volumes:
       - volume1:/bitnami/kafka
       - ./secrets:/bitnami/kafka/config/certs
+    deploy:
+      restart_policy:
+        condition: on-failure
+
 volumes:
   volume1:

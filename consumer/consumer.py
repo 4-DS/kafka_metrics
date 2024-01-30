@@ -13,9 +13,10 @@ dirname = os.path.dirname(os.path.join(os.path.abspath(__file__)))
 # To consume latest messages and auto-commit offsets
 consumer = KafkaConsumer(bootstrap_servers=[f'{os.getenv("KAFKA_SERVER")}:9092'],
                          security_protocol = "SSL",
-                         ssl_check_hostname=False,
-                         ssl_cafile=os.path.join(dirname, 'ca.pem'),
-                         ssl_certfile=os.path.join(dirname, 'client-signed.pem'),
+                         ssl_check_hostname=True,
+                         ssl_cafile=os.path.join(dirname, 'ca_root.pem'),
+                         ssl_certfile=os.path.join(dirname, 'client.pem'),
+                         ssl_keyfile=os.path.join(dirname, 'client.key'),
                          auto_offset_reset='earliest',
                          enable_auto_commit=True,
                          consumer_timeout_ms=1000)

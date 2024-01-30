@@ -9,7 +9,7 @@ git clone https://github.com/4-DS/kafka_metrics.git
 ```
 cd kafka_metrics
 cd kafka
-docker compose -f docker-compose-single-kafka-ssl.yaml up
+bash run_kafka.sh
 ```
 
 ## Produce Messages
@@ -41,3 +41,7 @@ bash run_consumer.sh
 ```
 
 **To change kafka server address for producer and consumer modify env variable KAFKA_SERVER in corresponding bash launch scripts**
+
+## How to get certs chain from kafka
+
+openssl s_client -showcerts -verify 5 -connect ${BROKER_IP}:${BROKER_PORT}
