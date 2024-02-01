@@ -2,4 +2,4 @@
 
 set -e
 
-KAFKA_TOPIC="example_topic" KAFKA_SERVER="kafka1" python3 ./producer.py
+python3 ./producer.py
