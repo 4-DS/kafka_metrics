@@ -13,6 +13,8 @@ KAFKA_REMOTE_ADDRESS=172.19.131.90
 
 docker run \
     --user $USER:$GROUP \
+    -v /etc/passwd:/etc/passwd \
+    -e USER=$USER \
     --rm \
     -e KAFKA_REMOTE_ADDRESS=$KAFKA_REMOTE_ADDRESS \
     -e KAFKA_HOSTNAME=$KAFKA_HOSTNAME \

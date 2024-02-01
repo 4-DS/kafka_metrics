@@ -2,8 +2,8 @@
 
 set -e
 
-USER=$(id -u)
-GROUP=$(id -g)
+export USER=$(id -u)
+export GROUP=$(id -g)
 
 read -p "Enter path to store kafka data [default = %current_directory%/data]: " kafkaDataFolder
 read -p "Enter topic name to create [default = example_topic]: " kafkaTopicName
@@ -16,12 +16,14 @@ KAFKA_TOPIC_NAME="${kafkaTopicName:-example_topic}"
 mkdir -p $KAFKA_DATA_FOLDER
 docker rm -f kafka-server || echo kafka-server doesnt exist
 
-docker run -d --name kafka-server --hostname=localhost \
+docker run -d \
+    --name kafka-server \
+    --hostname=localhost \
     -p 9092:9092  \
     -v "$PWD/keystore/kafka.keystore.jks":"/opt/bitnami/kafka/config/certs/kafka.keystore.jks":ro \
     -v "$PWD/truststore/kafka.truststore.jks":"/opt/bitnami/kafka/config/certs/kafka.truststore.jks":ro \
     -v "$PWD/client.ssl.conf":"/opt/bitnami/client.ssl.conf":ro \
-    -v "$KAFKA_DATA_FOLDER":"/bitnami/kafka" \
+    -v "kafka_data_volume":"/bitnami/kafka" \
     -e KAFKA_CFG_NODE_ID=0 \
     -e KAFKA_CFG_PROCESS_ROLES=broker,controller \
     -e KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER \
