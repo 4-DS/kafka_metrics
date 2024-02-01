@@ -7,7 +7,7 @@ export GROUP=$(id -g)
 
 read -p "Enter path to store kafka data [default = %current_directory%/data]: " kafkaDataFolder
 read -p "Enter topic name to create [default = example_topic]: " kafkaTopicName
-read -p "Enter VM IP for producer/consumer connections: " kafkaExternalIp
+read -p "Enter VM IP for producer/consumer connections [default = 127.0.0.1]: " kafkaExternalIp
 
 KAFKA_DATA_FOLDER="${kafkaDataFolder:-$PWD/data}"
 KAFKA_TOPIC_NAME="${kafkaTopicName:-example_topic}"
@@ -19,7 +19,7 @@ mkdir -p $KAFKA_DATA_FOLDER
 docker rm -f kafka-server || echo kafka-server doesnt exist
 
 docker run -d \
-    --restart=on-failure \
+    --restart=always \
     --name kafka-server \
     --hostname=localhost \
     -p 9092:9092 \
