@@ -2,7 +2,7 @@ docker rm -f kafka-server || echo kafka-server doesnt exist
 
 
 docker run -d --name kafka-server --hostname=localhost \
-     -p 9092:9092 -p 9094:9094 \
+     -p 9092:9092  \
     -v "$PWD/keystore/kafka.keystore.jks":"/opt/bitnami/kafka/config/certs/kafka.keystore.jks":ro \
     -v "$PWD/truststore/kafka.truststore.jks":"/opt/bitnami/kafka/config/certs/kafka.truststore.jks":ro \
     -v "$PWD/server.properties":"/opt/bitnami/kafka/config/kraft/server.properties" \
