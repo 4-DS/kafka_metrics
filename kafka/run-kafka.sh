@@ -18,7 +18,10 @@ KAFKA_EXTERNAL_IP="${kafkaExternalIp:-127.0.0.1}"
 mkdir -p $KAFKA_DATA_FOLDER
 docker rm -f kafka-server || echo kafka-server doesnt exist
 
-docker run -d --name kafka-server --hostname=localhost \
+docker run -d \
+    --restart=on-failure \
+    --name kafka-server \
+    --hostname=localhost \
     -p 9092:9092 \
     -p 9094:9094 \
     -v "$PWD/keystore/kafka.keystore.jks":"/opt/bitnami/kafka/config/certs/kafka.keystore.jks":ro \
