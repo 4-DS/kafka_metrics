@@ -11,7 +11,7 @@ read -p "Enter topic name to create [default = example_topic]: " kafkaTopicName
 KAFKA_DATA_FOLDER="${kafkaDataFolder:-$PWD/data}"
 KAFKA_TOPIC_NAME="${kafkaTopicName:-example_topic}"
 
-#. create-certs.sh
+. create-certs.sh
 
 mkdir -p $KAFKA_DATA_FOLDER
 docker rm -f kafka-server || echo kafka-server doesnt exist
