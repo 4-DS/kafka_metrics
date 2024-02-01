@@ -13,6 +13,10 @@ kafka_ip_address = input("Enter kafka server IP address [default = localhost]: "
 if not kafka_ip_address:
     kafka_ip_address = 'localhost'
 
+kafka_port = input("Enter kafka server port [default = 9094]: ")
+if not kafka_port:
+    kafka_port = '9094'
+
 kafka_topic = input("Enter kafka topic name to send data to [default = example_topic]: ")
 if not kafka_topic:
     kafka_topic = 'example_topic'
@@ -24,7 +28,7 @@ context.check_hostname = False
 context.verify_mode = ssl.CERT_NONE
 
 # To consume latest messages and auto-commit offsets
-consumer = KafkaConsumer(bootstrap_servers=[f'{kafka_ip_address}:9092'],
+consumer = KafkaConsumer(bootstrap_servers=[f'{kafka_ip_address}:{kafka_port}'],
                          security_protocol = "SSL",
                          ssl_context=context,
                          auto_offset_reset='earliest',

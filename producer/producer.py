@@ -12,6 +12,10 @@ kafka_ip_address = input("Enter kafka server IP address [default = localhost]: "
 if not kafka_ip_address:
     kafka_ip_address = 'localhost'
 
+kafka_port = input("Enter kafka server port [default = 9094]: ")
+if not kafka_port:
+    kafka_port = '9094'
+
 kafka_topic = input("Enter kafka topic name to send data to [default = example_topic]: ")
 if not kafka_topic:
     kafka_topic = 'example_topic'
@@ -22,7 +26,7 @@ context = ssl.create_default_context()
 context.check_hostname = False
 context.verify_mode = ssl.CERT_NONE
 
-producer = KafkaProducer(bootstrap_servers=[f'{kafka_ip_address}:9092'],
+producer = KafkaProducer(bootstrap_servers=[f'{kafka_ip_address}:{kafka_port}'],
                          security_protocol = "SSL",
                          ssl_context=context
                          )
@@ -36,11 +40,10 @@ future = producer.send(kafka_topic, b'test_event_data1')
 
 # Block for 'synchronous' sends
 try:
-    record_metadata = future.get(timeout=10)
+    record_metadata = future.get(timeout=1000)
 except KafkaError:
     # Decide what to do if produce request failed...
-    logging.exception()
-    pass
+    logging.exception('')
 
 # Successful result returns assigned partition and offset
 print(record_metadata.topic)
