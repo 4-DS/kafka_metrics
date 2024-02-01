@@ -10,6 +10,7 @@ rm -rf keystore
 
 KAFKA_HOSTNAME=localhost
 KAFKA_REMOTE_ADDRESS=172.19.131.90
+
 docker run \
     --user $USER:$GROUP \
     --rm \
@@ -21,4 +22,5 @@ docker run \
     --entrypoint /bin/bash \
     ibmjava:11-jdk \
     generate-ssl-certificates.sh
-\cp ca.crt ../producer/ca.crt
+    
+#\cp ca.crt ../producer/ca.crt

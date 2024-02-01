@@ -1,3 +1,9 @@
 *.jks
 *.crt
 *.pem
+producer/*.crt
+consumer/*.crt
+kafka/data/*
+kafka/*.crt
+kafka/keystore/*
+kafka/truststore/*

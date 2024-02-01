@@ -8,35 +8,31 @@ import json
 import os
 import ssl
 
+kafka_ip_address = input("Enter kafka server IP address [default = localhost]: ")
+if not kafka_ip_address:
+    kafka_ip_address = 'localhost'
+
+kafka_topic = input("Enter kafka topic name to send data to [default = example_topic]: ")
+if not kafka_topic:
+    kafka_topic = 'example_topic'
+
 dirname = os.path.dirname(os.path.join(os.path.abspath(__file__)))
 
-
 context = ssl.create_default_context()
-
 context.check_hostname = False
 context.verify_mode = ssl.CERT_NONE
-#context = ssl.create_default_context()
-#context.options &= ssl.OP_NO_TLSv1
-#context.options &= ssl.OP_NO_TLSv1_1
 
-producer = KafkaProducer(bootstrap_servers=[f'172.19.131.90:9092'],
+producer = KafkaProducer(bootstrap_servers=[f'{kafka_ip_address}:9092'],
                          security_protocol = "SSL",
-                       #  ssl_check_hostname=False,
-                       #  ssl_cafile=os.path.join(dirname, 'ca.crt')
-                         ssl_context=context,
-                         #ssl_certfile=os.path.join(dirname, 'client.pem'),
-                         #ssl_keyfile=os.path.join(dirname, 'client.key')
+                         ssl_context=context
                          )
 
-#producer = KafkaProducer(bootstrap_servers=[f'127.0.0.1:9092'])
 assert(producer.bootstrap_connected())
 
-os.environ['KAFKA_TOPIC'] = 'example_topic'
-
-print(producer.partitions_for(os.environ['KAFKA_TOPIC']))
+print(producer.partitions_for(kafka_topic))
 
 # Asynchronous by default
-future = producer.send(os.getenv('KAFKA_TOPIC'), b'test_event_data1')
+future = producer.send(kafka_topic, b'test_event_data1')
 
 # Block for 'synchronous' sends
 try:
@@ -53,7 +49,7 @@ print(record_metadata.offset)
 
 # produce asynchronously
 for _ in range(100):
-    producer.send(os.getenv('KAFKA_TOPIC'), b'msg')
+    producer.send(kafka_topic, b'msg')
 
 def on_send_success(record_metadata):
     print(record_metadata.topic)
@@ -65,7 +61,7 @@ def on_send_error(excp):
     # handle exception
 
 # produce asynchronously with callbacks
-producer.send(os.getenv('KAFKA_TOPIC'), b'raw_bytes').add_callback(on_send_success).add_errback(on_send_error)
+producer.send(kafka_topic, b'raw_bytes').add_callback(on_send_success).add_errback(on_send_error)
 
 # block until all async messages are sent
 producer.flush()
