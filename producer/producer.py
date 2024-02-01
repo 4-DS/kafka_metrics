@@ -10,15 +10,20 @@ import ssl
 
 dirname = os.path.dirname(os.path.join(os.path.abspath(__file__)))
 
+
+context = ssl.create_default_context()
+
+context.check_hostname = False
+context.verify_mode = ssl.CERT_NONE
 #context = ssl.create_default_context()
 #context.options &= ssl.OP_NO_TLSv1
 #context.options &= ssl.OP_NO_TLSv1_1
 
-producer = KafkaProducer(bootstrap_servers=[f'localhost:9092'],
+producer = KafkaProducer(bootstrap_servers=[f'172.19.131.90:9092'],
                          security_protocol = "SSL",
-                         ssl_check_hostname=False,
-                         ssl_cafile=os.path.join(dirname, 'ca_root.pem')
-                         #ssl_context=context,
+                       #  ssl_check_hostname=False,
+                       #  ssl_cafile=os.path.join(dirname, 'ca.crt')
+                         ssl_context=context,
                          #ssl_certfile=os.path.join(dirname, 'client.pem'),
                          #ssl_keyfile=os.path.join(dirname, 'client.key')
                          )
