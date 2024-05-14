@@ -6,7 +6,7 @@ KEYSTORE_FILENAME="kafka.keystore.jks"
 VALIDITY_IN_DAYS=3650
 DEFAULT_TRUSTSTORE_FILENAME="kafka.truststore.jks"
 TRUSTSTORE_WORKING_DIRECTORY="truststore"
-KEYSTORE_WORKING_DIRECTORY="keystore"
+KEYSTORE_WORKING_DIRECTORY="${KAFKA_REMOTE_ADDRESS}/keystore"
 CA_CERT_FILE="ca-cert"
 KEYSTORE_SIGN_REQUEST="cert-file"
 KEYSTORE_SIGN_REQUEST_SRL="ca-cert.srl"
@@ -52,17 +52,15 @@ echo "Welcome to the Kafka SSL keystore and trust store generator script."
 trust_store_file=""
 trust_store_private_key_file=""
 
-  trust_store_private_key_file="$TRUSTSTORE_WORKING_DIRECTORY/ca-key"
-
-  trust_store_file="$TRUSTSTORE_WORKING_DIRECTORY/$DEFAULT_TRUSTSTORE_FILENAME"
-
+trust_store_private_key_file="$TRUSTSTORE_WORKING_DIRECTORY/ca-key"
+trust_store_file="$TRUSTSTORE_WORKING_DIRECTORY/$DEFAULT_TRUSTSTORE_FILENAME"
 
 echo
 echo "Continuing with:"
 echo " - trust store file:        $trust_store_file"
 echo " - trust store private key: $trust_store_private_key_file"
 
-mkdir $KEYSTORE_WORKING_DIRECTORY
+mkdir -p $KEYSTORE_WORKING_DIRECTORY
 
 echo
 echo "Now, a keystore will be generated. Each broker and logical client needs its own"
@@ -129,6 +127,6 @@ echo "   (that was fulfilled)"
 echo " - '$KEYSTORE_SIGNED_CERT': the keystore's certificate, signed by the CA, and stored back"
 echo "    into the keystore"
 
-  rm -f $KEYSTORE_SIGN_REQUEST
-  rm -f $KEYSTORE_SIGNED_CERT
-  rm -f $KEYSTORE_SIGN_REQUEST_SRL
+rm -f $KEYSTORE_SIGN_REQUEST
+rm -f $KEYSTORE_SIGNED_CERT
+rm -f $KEYSTORE_SIGN_REQUEST_SRL

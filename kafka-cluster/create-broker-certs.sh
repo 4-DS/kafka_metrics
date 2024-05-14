@@ -5,11 +5,10 @@ set -e
 export USER=$(id -u)
 export GROUP=$(id -g)
 
-rm -rf truststore
-rm -rf keystore
-
 KAFKA_HOSTNAME=localhost
 KAFKA_REMOTE_ADDRESS=$1
+
+rm -rf "${KAFKA_REMOTE_ADDRESS}/keystore"
 
 docker run \
     --user $USER:$GROUP \

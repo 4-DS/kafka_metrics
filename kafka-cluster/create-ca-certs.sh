@@ -6,7 +6,6 @@ export USER=$(id -u)
 export GROUP=$(id -g)
 
 rm -rf truststore
-rm -rf keystore
 
 KAFKA_HOSTNAME=localhost
 
