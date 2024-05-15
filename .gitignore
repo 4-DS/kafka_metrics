@@ -7,3 +7,4 @@ kafka/data/*
 kafka/*.crt
 kafka/keystore/*
 kafka/truststore/*
+!kafka-cluster/truststore/kafka.truststore.jks
